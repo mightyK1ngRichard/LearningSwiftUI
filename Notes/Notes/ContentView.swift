@@ -10,8 +10,20 @@ import SwiftUI
 struct NoteItem: Identifiable, Codable {
     var id = UUID()
     var title: String?
-    var text: String
+    var text: String?
     var date: Date
+}
+
+class NoteInfo: ObservableObject {
+    @Published var title: String?
+    @Published var text: String?
+    @Published var date: Date
+    
+    init(title: String? = nil, text: String? = nil, date: Date = Date()) {
+        self.title = title
+        self.text = text
+        self.date = date
+    }
 }
 
 class Notes: ObservableObject {
@@ -37,9 +49,9 @@ class Notes: ObservableObject {
 
 struct ContentView: View {
     @ObservedObject var notes = Notes()
+    @ObservedObject var currentNode = NoteInfo()
     @State var openAddView = false
-    @State var noteSelected: Binding<NoteItem?> = .constant(nil)
-    @State var TESTVALUE = ""
+    
     var body: some View {
         NavigationView {
             Form {
@@ -55,12 +67,18 @@ struct ContentView: View {
                                 }
                                 Spacer()
                                 
-                                // TODO: Передать данные на экран
                             }
+                            NavigationLink(destination: ReviewNoteView(note: currentNode)) {
+                                EmptyView()
+                            }
+                        }
+                        .onTapGesture {
+                            self.currentNode.title = note.title
+                            self.currentNode.text = note.text
+                            self.currentNode.date = note.date
                         }
                     }
                     .onDelete(perform: DeleteNote)
-                    
                 }
             }
             .navigationBarTitle("Мои долги")

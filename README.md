@@ -5,4 +5,5 @@ Getting to know SwiftUI
 
 
 ## Previews:
-<img class="authorization" src="Previews/Preview.png" width="1000">
+<img class="authorization" src="Previews/Preview.png" width="1000"/>
+<img class="authorization" src="Previews/TodoList.png" width="1000"/>

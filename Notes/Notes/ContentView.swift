@@ -49,7 +49,6 @@ class Notes: ObservableObject {
 
 struct ContentView: View {
     @ObservedObject var notes = Notes()
-    @ObservedObject var currentNode = NoteInfo()
     @State var openAddView = false
     
     var body: some View {
@@ -68,14 +67,9 @@ struct ContentView: View {
                                 Spacer()
                                 
                             }
-                            NavigationLink(destination: ReviewNoteView(note: currentNode)) {
+                            NavigationLink(destination: ReviewNoteView(notes: notes, currentID: "\(note.id)")) {
                                 EmptyView()
                             }
-                        }
-                        .onTapGesture {
-                            self.currentNode.title = note.title
-                            self.currentNode.text = note.text
-                            self.currentNode.date = note.date
                         }
                     }
                     .onDelete(perform: DeleteNote)
